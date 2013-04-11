@@ -1624,7 +1624,6 @@ extern void sysrq_sched_debug_show(void);
 #endif
 extern void sched_init_granularity(void);
 extern void update_max_interval(void);
-
 extern void init_sched_dl_class(void);
 extern void init_sched_rt_class(void);
 extern void init_sched_fair_class(void);
