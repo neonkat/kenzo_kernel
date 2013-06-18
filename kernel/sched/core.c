@@ -5437,7 +5437,7 @@ u64 scheduler_tick_max_deferment(void)
 	if (time_before_eq(next, now))
 		return 0;
 
-	return jiffies_to_nsecs(next - now);
+	return (u64)jiffies_to_nsecs(next - now);
 }
 #endif
 
