@@ -155,6 +155,8 @@ enum {
 	SWP_FAST	= (1 << 8),	/* blkdev access is fast and cheap */
 					/* add others here before... */
 	SWP_SCANNING	= (1 << 9),	/* refcount in scan_swap_map */
+	SWP_FAST	= (1 << 9),	/* blkdev access is fast and cheap */
+					/* add others here before... */
 };
 
 #define SWAP_CLUSTER_MAX 32UL
