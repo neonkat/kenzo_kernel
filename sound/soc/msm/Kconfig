@@ -134,7 +134,6 @@ config QTI_PP
 
 config SND_SOC_CPE
 	tristate "CPE drivers"
-	depends on SND_SOC_WCD_CPE
 	help
 	 To add support for Codec Processing Engine. This support
 	 is to enable CPE block on the codec and this config needs
