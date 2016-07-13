@@ -1616,6 +1616,7 @@ static void binder_transaction(struct binder_proc *proc,
 			struct flat_binder_object *fp;
 			struct binder_node *node;
 			struct binder_ref *ref;
+
 			fp = to_flat_binder_object(hdr);
 			node = binder_get_node(proc, fp->binder);
 			if (node == NULL) {
