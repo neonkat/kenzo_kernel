@@ -89,6 +89,8 @@ GTAGS
 
 #my stuffs
 scripts/dtbToolCM
+Releases
+out/dtb
 
 #
 # Leavings from module signing
