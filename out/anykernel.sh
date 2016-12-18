@@ -1,0 +1,53 @@
+# AnyKernel2 Ramdisk Mod Script
+# osm0sis @ xda-developers
+
+## AnyKernel setup
+# EDIFY properties
+kernel.string=
+do.devicecheck=1
+do.initd=1
+do.modules=0
+do.cleanup=1
+device.name1=kenzo
+device.name2=
+device.name3=
+device.name4=
+device.name5=
+
+# shell variables
+block=/dev/block/bootdevice/by-name/boot;
+is_slot_device=0;
+
+
+## AnyKernel methods (DO NOT CHANGE)
+# import patching functions/variables - see for reference
+. /tmp/anykernel/tools/ak2-core.sh;
+
+
+## AnyKernel permissions
+# set permissions for included ramdisk files
+chmod -R 755 $ramdisk
+
+## AnyKernel install
+dump_boot;
+
+# begin ramdisk changes
+
+# remove mpdecsion binary
+mv $bindir/mpdecision-rm $bindir/mpdecision
+
+#add custom tuning to init.rc
+insert_line init.rc "import /init.infected.rc" after "import /init.trace.rc" "import /init.infected.rc\n";
+
+# Disable MP Decison
+replace_line init.rc "service mpdecision /system/bin/mpdecision" "#mpdecision /system/bin/mpdecision2";
+
+# Disable mp decision(6.x roms)
+replace_line init.qcom.rc "service mpdecision /system/bin/mpdecision" "#mpdecision /system/bin/mpdecision2";
+
+# end ramdisk changes
+
+write_boot;
+
+## end install
+
