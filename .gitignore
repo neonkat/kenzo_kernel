@@ -88,6 +88,7 @@ GTAGS
 scripts/dtbToolCM
 Releases
 out/dtb
+out/zImage
 
 #
 # Leavings from module signing
