@@ -193,8 +193,7 @@ SUBARCH := $(shell uname -m | sed -e s/i.86/x86/ -e s/x86_64/x86/ \
 # Default value for CROSS_COMPILE is not to prefix executables
 # Note: Some architectures assign CROSS_COMPILE in their arch/*/Makefile
 ARCH		:= arm64
-CROSS_COMPILE	:= /home/tanay297/android/toolchain/4.9-stock-64/bin/aarch64-linux-android-
-
+CROSS_COMPILE	:= $(CCACHE) /home/tanay297/android/toolchain/4.9-stock-64/bin/aarch64-linux-android-
 #CCACHE(BCZ STONE AGE PC BC ;_;)
 +CCACHE := ccache
 
@@ -383,7 +382,20 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -Werror-implicit-function-declaration \
 		   -Wno-format-security \
 		   -fno-delete-null-pointer-checks \
-		   -std=gnu89
+		   -std=gnu89 \
+                   -Wno-deprecated-declarations \
+		   -Wno-misleading-indentation \
+		   -Wno-unused-const-variable \
+		   -Wno-shift-overflow \
+		   -Wno-bool-compare \
+		   -Wno-memset-transposed-args \
+		   -Wno-discarded-array-qualifiers \
+                   -Wno-clobbered \
+                   -Wno-maybe-uninitialized \
+                   -Wno-array-bounds \
+                   -Wno-tautological-compare \
+                   -Wno-duplicate-decl-specifier \
+		   -Wno-memset-elt-size -Wno-switch-unreachable
 
 KBUILD_AFLAGS_KERNEL :=
 KBUILD_CFLAGS_KERNEL :=
