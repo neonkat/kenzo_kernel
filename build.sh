@@ -35,6 +35,7 @@ DEFCONFIG="kenzo_defconfig"
 export LOCALVERSION=~`echo $INFECTED_VER`
 export CROSS_COMPILE=$TOOLCHAIN/aarch64-linux-android-
 export ARCH=arm64
+export SUBARCH=arm64
 export KBUILD_BUILD_USER="neonkat"
 export KBUILD_BUILD_HOST="krustykrab"
 
@@ -103,7 +104,7 @@ function make_zip {
 		echo -e "*****************************************************"
 		cd $OUT_DIR
 		rm -f '*.zip'
-		zip -yr Infected_Kenzo_`echo $CUR_VER`.zip *
+		zip -r9 Infected_Kenzo_`echo $CUR_VER`.zip *
 		mv Infected_Kenzo_`echo $CUR_VER`.zip $OUT_ZIP
 		echo "Find your zip in Release directory"
 		echo -e "$default"
