@@ -518,6 +518,13 @@ static void wakeup_source_activate(struct wakeup_source *ws)
 		return;
 	}
 
+	if (!enable_ipa_ws && !strncmp(ws->name, "IPA_WS", 6)) {
+		if (ws->active)
+			wakeup_source_deactivate(ws);
+
+		return;
+	}
+
 	if (WARN(wakeup_source_not_registered(ws),
 			"unregistered wakeup source\n"))
 		return;
