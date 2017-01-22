@@ -748,14 +748,8 @@ static int mdss_dsi_panel_on(struct mdss_panel_data *pdata)
 		return -EINVAL;
 	}
 
-<<<<<<< HEAD
-=======
-	/* Ensure low persistence is disabled */
-	mdss_dsi_panel_apply_display_setting(pdata, 0);
-
 	display_on = true;
 
->>>>>>> 9b506a9... display: add a simple api to query the display state (on/off) at any point in time
 	pinfo = &pdata->panel_info;
 	ctrl = container_of(pdata, struct mdss_dsi_ctrl_pdata,
 				panel_data);

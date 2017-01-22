@@ -355,7 +355,7 @@ CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
 
 # fall back to -march=armv8-a+crypto in case the compiler isn't compatible
 # with -mcpu and -mtune
-ARM_ARCH_OPT := -mcpu=cortex-a72.cortex-a53+crypto
+#ARM_ARCH_OPT := -mcpu=cortex-a72.cortex-a53+crypto
 GEN_OPT_FLAGS := $(call cc-option,$(ARM_ARCH_OPT),-march=armv8-a+crypto) \
  -g0 \
  -DNDEBUG \
