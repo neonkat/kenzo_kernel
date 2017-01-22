@@ -199,6 +199,7 @@ struct cs_dbs_tuners {
 	unsigned int boost_count;
 	unsigned int boost_ceiling;
         unsigned int input_boost_freq;
+        unsigned int down_threshold_suspended;
 	unsigned int input_boost_duration;
 	unsigned int twostep_threshold;
 	unsigned int min_load;
