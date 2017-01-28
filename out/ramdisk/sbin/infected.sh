@@ -8,7 +8,7 @@ busybox mount -t rootfs -o remount,rw rootfs
 /sbin/bb/busybox --install -s /sbin
 
 #MSM hotplug
-echo "1" > /sys/module/msm_hotplug/msm_enabled;
+echo "0" > /sys/module/msm_hotplug/msm_enabled;
 echo "1" > /sys/module/msm_hotplug/min_cpus_online;
 echo "750" > /sys/module/msm_hotplug/down_lock_duration;
 echo "2" > /sys/module/msm_hotplug/max_cpus_online_susp;
@@ -43,7 +43,7 @@ echo "1366" > /proc/sys/kernel/random/read_wakeup_threshold;
 echo "2048" > /proc/sys/kernel/random/write_wakeup_threshold;
 
 #i/o
-echo "bfq" > /sys/block/mmcblk0/queue/scheduler;
+echo "sioplus" > /sys/block/mmcblk0/queue/scheduler;
 for i in /sys/block/*/queue;do
  echo 512 > $i/read_ahead_kb;
  echo 512 > $i/nr_requests;
