@@ -260,7 +260,7 @@ static ssize_t store_down_threshold_suspended(struct dbs_data *dbs_data, const c
 			input >= cs_tuners->up_threshold)
 		return -EINVAL;
 
-	cs_tuners->down_threshold = input;
+	cs_tuners->down_threshold_suspended = input;
 	return count;
 }
 
