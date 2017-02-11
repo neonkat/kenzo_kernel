@@ -27,10 +27,32 @@ contains() { test "${1#*$2}" != "$1" && return 0 || return 1; }
 
 # dump boot and extract ramdisk
 dump_boot() {
-  dd if=$block of=/tmp/anykernel/boot.img;
-  $bin/unpackbootimg -i /tmp/anykernel/boot.img -o $split_img;
+  if [ -f "$bin/nanddump" ]; then
+    $bin/nanddump -f /tmp/anykernel/boot.img $block;
+  else
+    dd if=$block of=/tmp/anykernel/boot.img;
+  fi;
+  if [ -f "$bin/unpackelf" ]; then
+    $bin/unpackelf -i /tmp/anykernel/boot.img -o $split_img;
+    mv -f $split_img/boot.img-ramdisk.cpio.gz $split_img/boot.img-ramdisk.gz;
+  else
+    $bin/unpackbootimg -i /tmp/anykernel/boot.img -o $split_img;
+  fi;
   if [ $? != 0 ]; then
     ui_print " "; ui_print "Dumping/splitting image failed. Aborting..."; exit 1;
+  fi;
+  if [ -f "$bin/mkmtkhdr" ]; then
+    dd bs=512 skip=1 conv=notrunc if=$split_img/boot.img-ramdisk.gz of=$split_img/temprd;
+    mv -f $split_img/temprd $split_img/boot.img-ramdisk.gz;
+  fi;
+  if [ -f "$bin/unpackelf" -a -f "$split_img/boot.img-dtb" ]; then
+    case $(od -ta -An -N4 $split_img/boot.img-dtb | sed -e 's/del //' -e 's/   //g') in
+      QCDT|ELF) ;;
+      *) gzip $split_img/boot.img-zImage;
+         mv -f $split_img/boot.img-zImage.gz $split_img/boot.img-zImage;
+         cat $split_img/boot.img-dtb >> $split_img/boot.img-zImage;
+         rm -f $split_img/boot.img-dtb;;
+    esac;
   fi;
   mv -f $ramdisk /tmp/anykernel/rdtmp;
   mkdir -p $ramdisk;
@@ -45,26 +67,38 @@ dump_boot() {
 # repack ramdisk then build and write image
 write_boot() {
   cd $split_img;
-  cmdline=`cat *-cmdline`;
-  board=`cat *-board`;
+  if [ -f *-cmdline ]; then
+    cmdline=`cat *-cmdline`;
+  fi;
+  if [ -f *-board ]; then
+    board=`cat *-board`;
+  fi;
   base=`cat *-base`;
   pagesize=`cat *-pagesize`;
   kerneloff=`cat *-kerneloff`;
   ramdiskoff=`cat *-ramdiskoff`;
-  tagsoff=`cat *-tagsoff`;
-  osver=`cat *-osversion`;
-  oslvl=`cat *-oslevel`;
+   if [ -f *-tagsoff ]; then
+    tagsoff=`cat *-tagsoff`;
+  fi;
+  if [ -f *-osversion ]; then
+    osver=`cat *-osversion`;
+  fi;
+  if [ -f *-oslevel ]; then
+    oslvl=`cat *-oslevel`;
+  fi;
   if [ -f *-second ]; then
     second=`ls *-second`;
     second="--second $split_img/$second";
     secondoff=`cat *-secondoff`;
     secondoff="--second_offset $secondoff";
   fi;
-  if [ -f /tmp/anykernel/zImage ]; then
-    kernel=/tmp/anykernel/zImage;
-  elif [ -f /tmp/anykernel/zImage-dtb ]; then
-    kernel=/tmp/anykernel/zImage-dtb;
-  else
+  for i in zImage zImage-dtb Image.gz Image.gz-dtb; do
+    if [ -f /tmp/anykernel/$i ]; then
+      kernel=/tmp/anykernel/$i;
+      break;
+    fi;
+  done;
+  if [ ! "$kernel" ]; then
     kernel=`ls *-zImage`;
     kernel=$split_img/$kernel;
   fi;
@@ -83,7 +117,16 @@ write_boot() {
   if [ $? != 0 ]; then
     ui_print " "; ui_print "Repacking ramdisk failed. Aborting..."; exit 1;
   fi;
-  $bin/mkbootimg --kernel $kernel --ramdisk /tmp/anykernel/ramdisk-new.cpio.gz $second --cmdline "$cmdline" --board "$board" --base $base --pagesize $pagesize --kernel_offset $kerneloff --ramdisk_offset $ramdiskoff $secondoff --tags_offset $tagsoff --os_version "$osver" --os_patch_level "$oslvl" $dtb --output /tmp/anykernel/boot-new.img;
+  if [ -f "$bin/mkmtkhdr" ]; then
+    cd /tmp/anykernel;
+    $bin/mkmtkhdr --rootfs ramdisk-new.cpio.gz;
+    mv -f ramdisk-new.cpio.gz-mtk ramdisk-new.cpio.gz;
+    case $kernel in
+      $split_img/*) ;;
+      *) $bin/mkmtkhdr --kernel $kernel; kernel=$kernel-mtk;;
+    esac;
+  fi;
+  $bin/mkbootimg --kernel $kernel --ramdisk /tmp/anykernel/ramdisk-new.cpio.gz $second --cmdline "$cmdline" --board "$board" --base $base --pagesize $pagesize --kernel_offset $kerneloff --ramdisk_offset $ramdiskoff $secondoff --tags_offset "$tagsoff" --os_version "$osver" --os_patch_level "$oslvl" $dtb --output /tmp/anykernel/boot-new.img;
   if [ $? != 0 ]; then
     ui_print " "; ui_print "Repacking image failed. Aborting..."; exit 1;
   elif [ `wc -c < /tmp/anykernel/boot-new.img` -gt `wc -c < /tmp/anykernel/boot.img` ]; then
@@ -95,11 +138,17 @@ write_boot() {
       ui_print " "; ui_print "User script execution failed. Aborting..."; exit 1;
     fi;
   fi;
-  dd if=/tmp/anykernel/boot-new.img of=$block;
+  if [ -f "$bin/flash_erase" -a -f "$bin/nandwrite" ]; then
+    $bin/flash_erase $block 0 0;
+    $bin/nandwrite -p $block /tmp/anykernel/boot-new.img;
+  else
+    dd if=/dev/zero of=$block;
+    dd if=/tmp/anykernel/boot-new.img of=$block;
+  fi;
 }
 
 # backup_file <file>
-backup_file() { cp $1 $1~; }
+backup_file() { test ! -f $1~ && cp $1 $1~; }
 
 # replace_string <file> <if search string> <original string> <replacement string>
 replace_string() {
@@ -139,7 +188,11 @@ insert_line() {
       after) offset=1;;
     esac;
     line=$((`grep -n "$4" $1 | head -n1 | cut -d: -f1` + offset));
-    sed -i "${line}s;^;${5}\n;" $1;
+    if [ "$(wc -l $1 | cut -d\  -f1)" -le "$line" ]; then
+      echo "$5" >> $1;
+    else
+      sed -i "${line}s;^;${5}\n;" $1;
+    fi;
   fi;
 }
 
