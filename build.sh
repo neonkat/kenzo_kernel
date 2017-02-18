@@ -26,7 +26,7 @@ NEW_OUT=$OUT_DIR
 
 # Kernel Version Info
 BASE="Infected_Kernel-"
-CUR_VER=""
+CUR_VER="R1"
 INFECTED_VER="$BASE$CUR_VER"
  
 # Variables
