@@ -15,6 +15,17 @@ on property:sys.boot_completed=1
     write /sys/devices/system/cpu/cpu4/online 1
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "relaxed"
     write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor "interactive"
+
+    # cafactive(initially will run on interactive loads,will change in future)
+    write /sys/devices/system/cpu/cpu0/cpufreq/cafactive/go_hispeed_load 65
+    write /sys/devices/system/cpu/cpu0/cpufreq/cafactive/hispeed_freq 1190400
+    write /sys/devices/system/cpu/cpu0/cpufreq/cafactive/min_sample_time 45000
+    write /sys/devices/system/cpu/cpu0/cpufreq/cafactive/timer_rate 30000
+    write /sys/devices/system/cpu/cpu0/cpufreq/cafactive/max_freq_hysteresis 100000
+    write /sys/devices/system/cpu/cpu0/cpufreq/cafactive/timer_slack 100000
+    write /sys/devices/system/cpu/cpu0/cpufreq/cafactive/target_loads "70 45:883200 57:1190400 63:1056000 75:998400 86:1305600 94:1401600"
+    write /sys/devices/system/cpu/cpu4/cpufreq/cafactive/go_hispeed_load 70
+    write /sys/devices/system/cpu/cpu4/cpufreq/cafactive/hispeed_freq 1305600
 	
     # interactive
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 65
@@ -29,13 +40,16 @@ on property:sys.boot_completed=1
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq 1305600
     
     # conservative
-    write /sys/devices/system/cpu/cpu0/cpufreq/conservative/freq_step 8
+    write /sys/devices/system/cpu/cpu0/cpufreq/conservative/freq_step 9
     write /sys/devices/system/cpu/cpu4/cpufreq/conservative/freq_step 12
 	
     # despair
-    write /sys/devices/system/cpu/cpu0/cpufreq/despair/freq_step 8
+    write /sys/devices/system/cpu/cpu0/cpufreq/despair/freq_step 9
     write /sys/devices/system/cpu/cpu4/cpufreq/despair/freq_step 12
 	
+    # bioshock
+    write /sys/devices/system/cpu/cpu0/cpufreq/bioshock/freq_step 9
+
     # process_reclaim
     write /sys/module/process_reclaim/parameters/enable_process_reclaim 1
     write /sys/module/process_reclaim/parameters/pressure_max 80
