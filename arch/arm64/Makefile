@@ -19,6 +19,15 @@ LIBGCC 		:= $(shell $(CC) $(KBUILD_CFLAGS) -print-libgcc-file-name)
 
 KBUILD_DEFCONFIG := defconfig
 
+ARM_ARCH_OPT := -mcpu=cortex-a72.cortex-a53+crypto -mtune=cortex-a72.cortex-a53
+GEN_OPT_FLAGS := $(call cc-option,$(ARM_ARCH_OPT),-march=armv8-a+crc+crypto) \
+  -g0 \
+  -DNDEBUG \
+  -fomit-frame-pointer \
+  -fmodulo-sched \
+  -fmodulo-sched-allow-regmoves \
+  -fivopts
+
 KBUILD_CFLAGS	+= -mgeneral-regs-only
 KBUILD_CFLAGS	+= -fno-pic
 ifeq ($(CONFIG_CPU_BIG_ENDIAN), y)
