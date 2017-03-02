@@ -8,10 +8,10 @@ busybox mount -t rootfs -o remount,rw rootfs
 /sbin/bb/busybox --install -s /sbin
 
 #MSM hotplug
-echo "0" > /sys/module/msm_hotplug/msm_enabled;
-echo "1" > /sys/module/msm_hotplug/min_cpus_online;
-echo "750" > /sys/module/msm_hotplug/down_lock_duration;
-echo "2" > /sys/module/msm_hotplug/max_cpus_online_susp;
+#echo "0" > /sys/module/msm_hotplug/msm_enabled;
+#echo "1" > /sys/module/msm_hotplug/min_cpus_online;
+#echo "750" > /sys/module/msm_hotplug/down_lock_duration;
+#echo "2" > /sys/module/msm_hotplug/max_cpus_online_susp;
 
 #intelli-plug
 #echo "787200" > /sys/module/intelli_plug/parameters/screen_off_max;
@@ -46,7 +46,6 @@ echo "2048" > /proc/sys/kernel/random/write_wakeup_threshold;
 echo "sioplus" > /sys/block/mmcblk0/queue/scheduler;
 for i in /sys/block/*/queue;do
  echo 512 > $i/read_ahead_kb;
- echo 512 > $i/nr_requests;
 done;
 
 # Google Services battery drain fixer by Alcolawl@xda
