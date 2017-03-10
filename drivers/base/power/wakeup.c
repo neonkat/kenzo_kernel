@@ -17,23 +17,14 @@
 #include <linux/types.h>
 #include <trace/events/power.h>
 #include <linux/moduleparam.h>
-
-static bool enable_si_ws = true;
-module_param(enable_si_ws, bool, 0644);
-static bool enable_msm_hsic_ws = true;
-module_param(enable_msm_hsic_ws, bool, 0644);
-static bool wlan_rx_wake = true;
-module_param(wlan_rx_wake, bool, 0644);
-static bool wlan_ctrl_wake = true;
-module_param(wlan_ctrl_wake, bool, 0644);
-static bool wlan_wake = true;
-module_param(wlan_wake, bool, 0644);
-static bool enable_bluedroid_timer_ws = true;
-module_param(enable_bluedroid_timer_ws, bool, 0644);
-static bool enable_ipa_ws = false;
-module_param(enable_ipa_ws, bool, 0644);
-
 #include "power.h"
+
+static bool enable_qcom_rx_wakelock_ws = true;
+module_param(enable_qcom_rx_wakelock_ws, bool, 0644);
+static bool enable_timerfd_ws = true;
+module_param(enable_timerfd_ws, bool, 0644);
+static bool enable_netlink_ws = true;
+module_param(enable_netlink_ws, bool, 0644);
 
 /*
  * If set, the suspend/hibernate code will abort transitions to a sleep state
@@ -511,17 +502,9 @@ static void wakeup_source_activate(struct wakeup_source *ws)
 {
 	unsigned int cec;
 
-	if (!enable_ipa_ws && !strncmp(ws->name, "IPA_WS", 6)) {
-		if (ws->active)
-			wakeup_source_deactivate(ws);
-
-		return;
-	}
-
-	if (!enable_ipa_ws && !strncmp(ws->name, "IPA_WS", 6)) {
-		if (ws->active)
-			wakeup_source_deactivate(ws);
-
+	if ((!enable_qcom_rx_wakelock_ws && !strncmp(ws->name, "qcom_rx_wakelock", 16)) ||
+			(!enable_timerfd_ws && !strncmp(ws->name, "[timerfd]", 9)) ||
+			(!enable_netlink_ws && !strncmp(ws->name, "NETLINK", 7))) {
 		return;
 	}
 
