@@ -267,6 +267,12 @@ config CHARGER_ISP1704
 	  Say Y to enable support for USB Charger Detection with
 	  ISP1707/ISP1704 USB transceivers.
 
+config MSM_BCL_DARKNESS_CTL
+	bool "BCL driver to control with new condition"
+	depends on BATTERY_BCL
+	help
+	  Say Y here to enable new condition.
+
 config CHARGER_MAX8903
 	tristate "MAX8903 Battery DC-DC Charger for USB and Adapter Power"
 	help
