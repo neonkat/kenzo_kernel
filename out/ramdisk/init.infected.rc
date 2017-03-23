@@ -43,15 +43,15 @@ on property:sys.boot_completed=1
     # interactive
 
    --small--
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 75
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 90
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay 35000
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq 1017600
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq 1382400
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy 0
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time 45000
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time 40000
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate 33000
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/max_freq_hysteresis 100000
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack 100000
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads "65 883200:35 1017600:55 1190400:65 1305600:75 1401600:85 1440000:99"
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/max_freq_hysteresis 45000
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack -1
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads "60 806400:35 1017600:55 1190400:65 1305600:75 1401600:85 1440000:99"
 
     --big--
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 70
