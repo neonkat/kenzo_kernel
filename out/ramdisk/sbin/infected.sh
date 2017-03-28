@@ -26,7 +26,7 @@ echo "50" > /proc/sys/vm/vfs_cache_pressure;
 echo "5" > /proc/sys/vm/dirty_background_ratio;
 echo "3000" > /proc/sys/vm/dirty_writeback_centisecs;
 echo "600" > /proc/sys/vm/dirty_expire_centisecs;
-echo "75" > /proc/sys/vm/swappiness;
+echo "45" > /proc/sys/vm/swappiness;
 echo "4096" > /proc/sys/vm/min_free_kbytes;
 echo "5120000" > /proc/sys/vm/dirty_background_bytes;
 
@@ -47,6 +47,16 @@ echo "sioplus" > /sys/block/mmcblk0/queue/scheduler;
 for i in /sys/block/*/queue;do
  echo 512 > $i/read_ahead_kb;
 done;
+
+#zram
+ZRAM_SWAP="268435456";
+swapoff /dev/block/zram0 > /dev/null 2>&1;
+echo "1" > /sys/block/zram0/reset;
+echo "0" > /sys/block/zram0/disksize;
+echo "4" > /sys/block/zram0/max_comp_streams;
+echo $ZRAM_SWAP > /sys/block/zram0/disksize;
+mkswap /dev/block/zram0 > /dev/null 2>&1;
+swapon /dev/block/zram0 > /dev/null 2>&1;
 
 # Google Services battery drain fixer by Alcolawl@xda
 pm enable com.google.android.gms/.update.SystemUpdateActivity
