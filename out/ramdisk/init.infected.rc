@@ -7,6 +7,9 @@ on property:sys.boot_completed=1
     # KSM
 
     write /sys/kernel/mm/ksm/run 0
+    write /sys/kernel/mm/ksm/pages_to_scan 100
+    write /sys/kernel/mm/ksm/sleep_millisecs 500
+
 	
     #FUCK THIS BITCH 
 
