@@ -7,6 +7,8 @@ busybox mount -t rootfs -o remount,rw rootfs
 # Install Busybox
 /sbin/bb/busybox --install -s /sbin
 
+BB="/system/xbin/busybox";
+
 #MSM hotplug
 #echo "0" > /sys/module/msm_hotplug/msm_enabled;
 #echo "1" > /sys/module/msm_hotplug/min_cpus_online;
@@ -50,13 +52,13 @@ done;
 
 #zram
 ZRAM_SWAP="268435456";
-swapoff /dev/block/zram0 > /dev/null 2>&1;
-echo "1" > /sys/block/zram0/reset;
-echo "0" > /sys/block/zram0/disksize;
-echo "4" > /sys/block/zram0/max_comp_streams;
-echo $ZRAM_SWAP > /sys/block/zram0/disksize;
-mkswap /dev/block/zram0 > /dev/null 2>&1;
-swapon /dev/block/zram0 > /dev/null 2>&1;
+$BB swapoff /dev/block/zram0 > /dev/null 2>&1;
+$BB echo "1" > /sys/block/zram0/reset;
+$BB echo "0" > /sys/block/zram0/disksize;
+$BB echo "4" > /sys/block/zram0/max_comp_streams;
+$BB echo $ZRAM_SWAP > /sys/block/zram0/disksize;
+$BB mkswap /dev/block/zram0 > /dev/null 2>&1;
+$BB swapon /dev/block/zram0 > /dev/null 2>&1;
 
 # Google Services battery drain fixer by Alcolawl@xda
 pm enable com.google.android.gms/.update.SystemUpdateActivity
