@@ -16,17 +16,23 @@ show_progress() { echo "progress $1 $2" > $OUTFD; }
 set_perm_recursive() {
   dirs=$(echo $* | $bb awk '{ print substr($0, index($0,$5)) }');
   for i in $dirs; do
-    chown -R $1.$2 $i; chown -R $1:$2 $i;
+    chown -R $1:$2 $i;
     find "$i" -type d -exec chmod $3 {} +;
     find "$i" -type f -exec chmod $4 {} +;
   done;
 }
 file_getprop() { grep "^$2" "$1" | cut -d= -f2; }
 getprop() { test -e /sbin/getprop && /sbin/getprop $1 || file_getprop /default.prop $1; }
-abort() { ui_print "$*"; umount /system; umount /data; exit 1; }
+cleanup() { rm -rf /tmp/anykernel; }
+if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.cleanuponabort)" == 1 ]; then
+    abort() { ui_print "$*"; cleanup; umount /system; umount /data; exit 1; }
+  else
+    abort() { ui_print "$*"; umount /system; umount /data; exit 1; }
+fi;
 
 show_progress 1.34 4;
 ui_print " ";
+cleanup;
 mkdir -p /tmp/anykernel/bin;
 cd /tmp/anykernel;
 unzip -o "$ZIP";
@@ -67,15 +73,6 @@ if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.devicecheck)" == 1 ]; then
   fi;
 fi;
 
-if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.initd)" == 1 ]; then
-  ui_print "Creating init.d...";
-  ui_print " ";
-  mount -o rw,remount -t auto /system;
-  mkdir $root/system/etc/init.d;
-  set_perm_recursive 0 0 0755 0755 $root/system/etc/init.d;
-  mount -o ro,remount -t auto /system;
-fi;
-
 ui_print "Injecting Infection...";
 for i in $($bb --list); do
   $bb ln -s $bb /tmp/anykernel/bin/$i;
@@ -98,7 +95,7 @@ if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.modules)" == 1 ]; then
 fi;
 
 if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.cleanup)" == 1 ]; then
-  rm -rf /tmp/anykernel;
+  cleanup;
 fi;
 
 umount /system;
@@ -107,4 +104,3 @@ ui_print " ";
 ui_print "Device Successfully Infected!";
 ui_print " ";
 ui_print " ";
-
