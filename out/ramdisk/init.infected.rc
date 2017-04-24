@@ -14,16 +14,23 @@ on property:sys.boot_completed=1
     #FUCK THIS BITCH 
 
     write /sys/module/msm_thermal/core_control/enabled 0
+    write /sys/module/msm_performance/parameters/touchboost 0
 
     #Arch power
     write /sys/kernel/sched/arch_power 1
+   
+    #CPU Boost
+    write /sys/module/cpu_boost/parameters/input_boost_enabled 1
+    write /sys/module/cpu_boost/parameters/input_boost_freq "0:1017600 1:0 2:0 3:0 4:940800 5:0"
+    write /sys/module/cpu_boost/parameters/input_boost_ms 40
+    write /sys/module/cpu_boost/parameters/migration_load_threshold 15
 
     # turn on bitches
 
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 400000
-    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 400000
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "interactive"
     write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor "interactive"
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 400000
+    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 400000
 
     # cafactive(initially will run on interactive loads,will change in future)
 
@@ -49,19 +56,19 @@ on property:sys.boot_completed=1
     # interactive
 
    --small--
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 90
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 99
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay 35000
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq 1382400
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq 1440000
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy 0
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time 40000
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate 33000
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time 45000
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate 35000
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/max_freq_hysteresis 45000
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack -1
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads "60 806400:35 1017600:55 1190400:65 1305600:75 1401600:85 1440000:99"
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads "60 806400:35 1017600:55 1190400:70 1305600:80 1401600:90 1440000:99"
 
     --big--
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 70
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq 1248000
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq 1612800
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time 30000
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/use_sched_load 0
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads "65 883200:25 998400:30 1056000:43 1190400:53 1305600:65 1612800:75 1747200:83 1804800:90"
