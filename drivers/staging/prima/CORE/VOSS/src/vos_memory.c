@@ -550,7 +550,7 @@ v_BOOL_t vos_mem_compare(
 }   
 
 
-v_SINT_t vos_mem_compare2( v_VOID_t *pMemory1, v_VOID_t *pMemory2, v_U32_t numBytes )
+v_SINT_t vos_mem_compare2( const v_VOID_t *pMemory1, const v_VOID_t *pMemory2, v_U32_t numBytes )
 
 { 
    return( (v_SINT_t) memcmp( pMemory1, pMemory2, numBytes ) );
