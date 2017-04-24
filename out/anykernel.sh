@@ -2,17 +2,20 @@
 # osm0sis @ xda-developers
 
 ## AnyKernel setup
-# EDIFY properties
+# begin properties
+properties() {
 kernel.string=
 do.devicecheck=1
 do.initd=1
 do.modules=0
 do.cleanup=1
+do.cleanuponabort=0
 device.name1=kenzo
 device.name2=
 device.name3=
 device.name4=
 device.name5=
+} # end properties
 
 # shell variables
 block=/dev/block/bootdevice/by-name/boot;
