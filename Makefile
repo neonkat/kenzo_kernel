@@ -246,8 +246,8 @@ GRAPHITE = -fgraphite -fgraphite-identity -floop-interchange -ftree-loop-distrib
 
 HOSTCC       = $(CCACHE) gcc
 HOSTCXX      = $(CCACHE) g++
-HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -Ofast -fomit-frame-pointer -std=gnu89 -pipe -DNDEBUG -fgcse-las $(GRAPHITE)
-HOSTCXXFLAGS = -Ofast -pipe -DNDEBUG -fgcse-las $(GRAPHITE)
+HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer -std=gnu89 -pipe -DNDEBUG -fgcse-las $(GRAPHITE)
+HOSTCXXFLAGS = -O2 -pipe -DNDEBUG -fgcse-las $(GRAPHITE)
 
 # Decide whether to build built-in, modular, or both.
 # Normally, just do built-in.
@@ -618,7 +618,7 @@ all: vmlinux
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
 KBUILD_CFLAGS	+= -Os $(call cc-disable-warning,maybe-uninitialized,)
 else
-KBUILD_CFLAGS	+= -Ofast $(call cc-disable-warning,maybe-uninitialized,) $(call cc-disable-warning,array-bounds) -fmodulo-sched -fmodulo-sched-allow-regmoves -fno-tree-vectorize -Wno-array-bounds $(OPTIMIZFLAGS) $(GRAPHITE)
+KBUILD_CFLAGS	+= -O2 $(call cc-disable-warning,maybe-uninitialized,) $(call cc-disable-warning,array-bounds) -fmodulo-sched -fmodulo-sched-allow-regmoves -fno-tree-vectorize -Wno-array-bounds $(OPTIMIZFLAGS) $(GRAPHITE)
 endif
 
 include $(srctree)/arch/$(SRCARCH)/Makefile
