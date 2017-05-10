@@ -85,6 +85,10 @@ if [ $? != "0" ]; then
   abort;
 fi;
 
+mount -o rw,remount -t auto /system;
+cp /tmp/anykernel/tools/gxfingerprint.default.so /system/lib64/hw/gxfingerprint.default.so;
+mount -o ro,remount -t auto /system;
+
 if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.modules)" == 1 ]; then
   ui_print " ";
   ui_print "Pushing modules...";
