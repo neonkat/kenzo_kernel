@@ -16,7 +16,7 @@ KERNEL_DIR=$PWD
 IMAGE=$KERNEL_DIR/arch/arm64/boot/Image
 #IMAGE=$KERNEL_DIR/arch/arm/boot/zImage for 32 bit architecture
 DTBTOOL=$KERNEL_DIR/scripts/dtbToolCM
-TOOLCHAIN=/home/tanay297/android/toolchain/6.x-linaro-64/bin
+TOOLCHAIN=/home/tanay297/android/toolchain/6.x-stock-64/bin
 
 #Paths
 OUT_DIR=$KERNEL_DIR/out
@@ -33,7 +33,7 @@ INFECTED_VER="$BASE$CUR_VER"
 
 DEFCONFIG="kenzo_defconfig"
 export LOCALVERSION=~`echo $INFECTED_VER`
-export CROSS_COMPILE=$TOOLCHAIN/aarch64-linux-android-
+export CROSS_COMPILE=$TOOLCHAIN/aarch64-linux-gnu-
 export ARCH=arm64
 export SUBARCH=arm64
 export KBUILD_BUILD_USER="neonkat"
