@@ -31,6 +31,7 @@ echo "600" > /proc/sys/vm/dirty_expire_centisecs;
 echo "45" > /proc/sys/vm/swappiness;
 echo "4096" > /proc/sys/vm/min_free_kbytes;
 echo "5120000" > /proc/sys/vm/dirty_background_bytes;
+echo "1" > /proc/sys/vm/laptop_mode;
 
 #cpu
 
@@ -45,10 +46,10 @@ echo "1366" > /proc/sys/kernel/random/read_wakeup_threshold;
 echo "2048" > /proc/sys/kernel/random/write_wakeup_threshold;
 
 #i/o
-echo "sioplus" > /sys/block/mmcblk0/queue/scheduler;
-for i in /sys/block/*/queue;do
- echo 512 > $i/read_ahead_kb;
-done;
+#echo "sioplus" > /sys/block/mmcblk0/queue/scheduler;
+#for i in /sys/block/*/queue;do
+# echo 512 > $i/read_ahead_kb;
+#done;
 
 #zram
 ZRAM_SWAP="268435456";
