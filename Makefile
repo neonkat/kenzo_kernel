@@ -193,7 +193,7 @@ SUBARCH := $(shell uname -m | sed -e s/i.86/x86/ -e s/x86_64/x86/ \
 # Default value for CROSS_COMPILE is not to prefix executables
 # Note: Some architectures assign CROSS_COMPILE in their arch/*/Makefile
 ARCH		:= arm64
-CROSS_COMPILE	:= $(CCACHE) /home/tanay297/android/toolchain/6.x-linaro-64/bin/aarch64-linux-android-
+CROSS_COMPILE	:= $(CCACHE) /home/tanay297/android/toolchain/6.x-stock-64/bin/aarch64-linux-gnu-
 
 #CCACHE(BCZ STONE AGE PC BC ;_;)
 CCACHE := ccache
