@@ -364,7 +364,7 @@ GEN_OPT_FLAGS := $(call cc-option,$(ARM_ARCH_OPT),-march=armv8-a+crypto) \
  -fmodulo-sched-allow-regmoves \
  -fivopts
 
-OPTIMIZFLAGS    = -fgcse-las -fgcse-sm -fipa-pta -fivopts -fomit-frame-pointer \
+OPTIMIZFLAGS    = -fipa-sra -fipa-cp -fipa-cp-clone -fgcse-las -fgcse-sm -fipa-pta -fivopts -fomit-frame-pointer \
 		  -frename-registers -fsection-anchors -ftracer \
                   -ftree-loop-vectorize -ftree-loop-distribute-patterns -fvect-cost-model -ftree-partial-pre -fgcse-after-reload -fsched-spec-load \
                   -fpredictive-commoning -fsplit-paths -ftree-slp-vectorize -fpeel-loops -fipa-cp-clone \
