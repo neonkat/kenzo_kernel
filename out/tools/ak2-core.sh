@@ -95,6 +95,10 @@ write_boot() {
     secondoff=`cat *-secondoff`;
     secondoff="--second_offset $secondoff";
   fi;
+  if [ -f *-hash ]; then
+    hash=`cat *-hash`;
+    hash="--hash $hash";
+  fi;
   for i in zImage zImage-dtb Image.gz Image.gz-dtb Image Image-dtb Image.bz2 Image.bz2-dtb Image.lzo Image.lzo-dtb Image.lzma Image.lzma-dtb Image.xz Image.xz-dtb Image.lz4 Image.lz4-dtb Image.fit; do
     if [ -f /tmp/anykernel/$i ]; then
       kernel=/tmp/anykernel/$i;
@@ -133,7 +137,7 @@ write_boot() {
       *) $bin/mkmtkhdr --kernel $kernel; kernel=$kernel-mtk;;
     esac;
   fi;
-  $bin/mkbootimg --kernel $kernel --ramdisk ramdisk-new.cpio.gz $second --cmdline "$cmdline" --board "$board" --base $base --pagesize $pagesize --kernel_offset $kerneloff --ramdisk_offset $ramdiskoff $secondoff --tags_offset "$tagsoff" --os_version "$osver" --os_patch_level "$oslvl" $dtb --output boot-new.img;
+  $bin/mkbootimg --kernel $kernel --ramdisk ramdisk-new.cpio.gz $second --cmdline "$cmdline" --board "$board" --base $base --pagesize $pagesize --kernel_offset $kerneloff --ramdisk_offset $ramdiskoff $secondoff --tags_offset "$tagsoff" --os_version "$osver" --os_patch_level "$oslvl" $hash $dtb --output boot-new.img;
   if [ $? != 0 ]; then
     ui_print " "; ui_print "Repacking image failed. Aborting..."; exit 1;
   elif [ `wc -c < boot-new.img` -gt `wc -c < boot.img` ]; then
@@ -144,6 +148,12 @@ write_boot() {
     if [ $? != 0 ]; then
       ui_print " "; ui_print "Signing image failed. Aborting..."; exit 1;
     fi;
+    mv -f boot-new-signed.img boot-new.img;
+  fi;
+  if [ -f "$bin/blobpack" ]; then
+    printf '-SIGNED-BY-SIGNBLOB-\00\00\00\00\00\00\00\00' > boot-new-signed.img;
+    $bin/blobpack tempblob LNX boot-new.img;
+    cat tempblob >> boot-new-signed.img;
     mv -f boot-new-signed.img boot-new.img;
   fi;
   if [ -f "/data/custom_boot_image_patch.sh" ]; then
@@ -289,6 +299,16 @@ patch_cmdline() {
   else
     match=$(grep -o "$1.*$" $cmdfile | cut -d\  -f1);
     sed -i -e "s;${match};${2};" -e 's;  ; ;' -e 's;[ \t]*$;;' $cmdfile;
+  fi;
+}
+
+# patch_prop <prop file> <prop name> <new prop value>
+patch_prop() {
+  if [ -z "$(grep "^$2=" $1)" ]; then
+    echo -ne "\n$2=$3\n" >> $1;
+  else
+    line=`grep -n "^$2=" $1 | head -n1 | cut -d: -f1`;
+    sed -i "${line}s;.*;${2}=${3};" $1;
   fi;
 }
 
