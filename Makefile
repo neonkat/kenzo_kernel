@@ -367,6 +367,7 @@ GEN_OPT_FLAGS := $(call cc-option,$(ARM_ARCH_OPT),-march=armv8-a+crypto) \
 OPTIMIZFLAGS    = -fgcse-las -fgcse-sm -fipa-pta -fivopts -fomit-frame-pointer \
 		  -frename-registers -fsection-anchors -ftracer \
                   -ftree-loop-vectorize -ftree-loop-distribute-patterns -fvect-cost-model -ftree-partial-pre -fgcse-after-reload -fsched-spec-load \
+                  -fpredictive-commoning -fsplit-paths -ftree-slp-vectorize -fpeel-loops -fipa-cp-clone \
 		  -ftree-loop-im -ftree-loop-ivcanon -funsafe-loop-optimizations \
 		  -funswitch-loops -fweb -pipe -ffast-math -fsingle-precision-constant \
                   -fforce-addr -fno-strict-aliasing $(GEN_OPT_FLAGS) 
@@ -417,7 +418,8 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
                    -Wno-array-bounds \
                    -Wno-tautological-compare \
                    -Wno-duplicate-decl-specifier \
-		   -Wno-memset-elt-size -Wno-switch-unreachable
+		   -Wno-memset-elt-size -Wno-switch-unreachable \
+                   $(OPTIMIZFLAGS) $(GRAPHITE)
 
 KBUILD_AFLAGS_KERNEL := $(OPTIMIZFLAGS) $(GRAPHITE)
 KBUILD_CFLAGS_KERNEL := $(OPTIMIZFLAGS) $(GRAPHITE)
