@@ -87,7 +87,10 @@ fi;
 
 mount -o rw,remount -t auto /system;
 cp /tmp/anykernel/tools/gxfingerprint.default.so /system/lib64/hw/gxfingerprint.default.so;
+rm -rf /sytem/etc/init.qcom.post_boot.sh;
 mount -o ro,remount -t auto /system;
+
+
 
 if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.modules)" == 1 ]; then
   ui_print " ";
