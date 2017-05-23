@@ -40,11 +40,11 @@ dump_boot;
 mv $bindir/mpdecision-rm $bindir/mpdecision
 
 #add custom tuning to init.rc
-insert_line init.rc "import /init.infected.rc" after "import /init.trace.rc" "import /init.infected.rc";
+insert_line init.qcom.rc "import /init.infected.rc" after "import /init.trace.rc" "import /init.infected.rc";
 
 insert_line init.qcom.rc "import init.qcom.power.rc" before "import init.qcom.usb.rc" "import init.qcom.power.rc";
 
-insert_line init.rc "import /init.spectrum.rc" after "import /init.infected.rc" "import /init.spectrum.rc";
+insert_line init.qcom.rc "import /init.spectrum.rc" after "import /init.infected.rc" "import /init.spectrum.rc";
 
 # Disable MP Decison
 replace_line init.rc "service mpdecision /system/bin/mpdecision" "#mpdecision /system/bin/mpdecision2";
