@@ -37,8 +37,8 @@ on property:sys.boot_completed=1
     #CPU Boost
 
     write /sys/module/cpu_boost/parameters/input_boost_enabled 1
-    write /sys/module/cpu_boost/parameters/input_boost_freq "0:1017600 1:0 2:0 3:0 4:940800 5:0"
-    write /sys/module/cpu_boost/parameters/input_boost_ms 40
+    write /sys/module/cpu_boost/parameters/input_boost_freq "0:1017600 1:1017600 2:0 3:0 4:0 5:0"
+    write /sys/module/cpu_boost/parameters/input_boost_ms 60
     write /sys/module/cpu_boost/parameters/migration_load_threshold 15
 
     # turn on bitches
@@ -71,31 +71,31 @@ on property:sys.boot_completed=1
 	
     # interactive
 
-   --small--
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 400000
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1440000
     write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 400000
     write /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq 1958600
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 99
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay 25000
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay 0
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq 1440000
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy 0
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time 45000
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate 35000
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time 40000
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate 30000
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/max_freq_hysteresis 0
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack -1
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads "60 806400:35 1017600:55 1190400:70 1305600:80 1401600:90 1440000:99"   
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads "80 691200:25 806400:40 1017600:55 1190400:70 1305600:80 1382400:85 1401600:92 1440000:97"   
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_sched_load 0
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/align_windows 1
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_slack -1
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 65
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay "15000 1382400:35000"
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq 1382400
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time 50000
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time 35000
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate 25000
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/use_sched_load 0
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/align_windows 1
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads "50 883200:30 998400:45 1113600:55 1382400:65 1612800:75 1747200:85 1804800:93 1958600:98"
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/max_freq_hysteresis 45000
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/max_freq_hysteresis 25000
     
     # cultivation 
 
