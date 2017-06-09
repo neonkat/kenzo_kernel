@@ -172,6 +172,9 @@ SUBARCH := $(shell uname -m | sed -e s/i.86/x86/ -e s/x86_64/x86/ \
 				  -e s/ppc.*/powerpc/ -e s/mips.*/mips/ \
 				  -e s/sh[234].*/sh/ -e s/aarch64.*/arm64/ )
 
+#CCACHE(BCZ STONE AGE PC BC ;_;)
+CCACHE := ccache
+
 # Cross compiling and selecting different set of gcc/bin-utils
 # ---------------------------------------------------------------------------
 #
@@ -194,9 +197,6 @@ SUBARCH := $(shell uname -m | sed -e s/i.86/x86/ -e s/x86_64/x86/ \
 # Note: Some architectures assign CROSS_COMPILE in their arch/*/Makefile
 ARCH		:= arm64
 CROSS_COMPILE	:= $(CCACHE) /home/tanay297/android/toolchain/6.x-stock-64/bin/aarch64-linux-gnu-
-
-#CCACHE(BCZ STONE AGE PC BC ;_;)
-CCACHE := ccache
 
 # Architecture as present in compile.h
 UTS_MACHINE 	:= $(ARCH)
@@ -364,10 +364,10 @@ GEN_OPT_FLAGS := $(call cc-option,$(ARM_ARCH_OPT),-march=armv8-a+crypto) \
  -fmodulo-sched-allow-regmoves \
  -fivopts
 
-OPTIMIZFLAGS    = -fipa-sra -fipa-cp -fipa-cp-clone -fgcse-las -fgcse-sm -fipa-pta -fivopts -fomit-frame-pointer \
+OPTIMIZFLAGS    = -fipa-sra -fipa-cp -fipa-cp-clone -fgcse-las -fgcse-lm -fgcse-sm -fipa-pta -fivopts -fomit-frame-pointer \
 		  -frename-registers -fsection-anchors -ftracer \
                   -ftree-loop-vectorize -ftree-loop-distribute-patterns -fvect-cost-model -ftree-partial-pre -fgcse-after-reload -fsched-spec-load \
-                  -fpredictive-commoning -fsplit-paths -ftree-slp-vectorize -fpeel-loops -fipa-cp-clone \
+                  -fpredictive-commoning -fsplit-paths -ftree-slp-vectorize -fpeel-loops -fipa-cp-clone -mlow-precision-recip-sqrt -mpc-relative-literal-loads \
 		  -ftree-loop-im -ftree-loop-ivcanon -funsafe-loop-optimizations \
 		  -funswitch-loops -fweb -pipe -ffast-math -fsingle-precision-constant \
                   -fforce-addr -fno-strict-aliasing $(GEN_OPT_FLAGS) 
@@ -620,7 +620,7 @@ all: vmlinux
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
 KBUILD_CFLAGS	+= -Os $(call cc-disable-warning,maybe-uninitialized,)
 else
-KBUILD_CFLAGS	+= -O2 $(call cc-disable-warning,maybe-uninitialized,) $(call cc-disable-warning,array-bounds) -fmodulo-sched -fmodulo-sched-allow-regmoves -fno-tree-vectorize -Wno-array-bounds $(OPTIMIZFLAGS) $(GRAPHITE)
+KBUILD_CFLAGS	+= -O2 $(call cc-disable-warning,maybe-uninitialized,) $(call cc-disable-warning,array-bounds)
 endif
 
 include $(srctree)/arch/$(SRCARCH)/Makefile
