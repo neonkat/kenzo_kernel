@@ -413,8 +413,6 @@ static void __cpufreq_interactive_timer(unsigned long data, bool is_notif)
 		return;
 	if (!pcpu->governor_enabled)
 		goto exit;
-	if (ppol->policy->min == ppol->policy->max)
-		goto rearm;
 
 	spin_lock_irqsave(&pcpu->load_lock, flags);
 	pcpu->last_evaluated_jiffy = get_jiffies_64();
