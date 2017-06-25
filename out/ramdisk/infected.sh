@@ -51,16 +51,6 @@ echo "2048" > /proc/sys/kernel/random/write_wakeup_threshold;
 # echo 512 > $i/read_ahead_kb;
 #done;
 
-#zram
-ZRAM_SWAP="268435456";
-$BB swapoff /dev/block/zram0 > /dev/null 2>&1;
-$BB echo "1" > /sys/block/zram0/reset;
-$BB echo "0" > /sys/block/zram0/disksize;
-$BB echo "4" > /sys/block/zram0/max_comp_streams;
-$BB echo $ZRAM_SWAP > /sys/block/zram0/disksize;
-$BB mkswap /dev/block/zram0 > /dev/null 2>&1;
-$BB swapon /dev/block/zram0 > /dev/null 2>&1;
-
 # Google Services battery drain fixer by Alcolawl@xda
 pm enable com.google.android.gms/.update.SystemUpdateActivity
 pm enable com.google.android.gms/.update.SystemUpdateService
