@@ -6,12 +6,11 @@ on boot
     write /dev/cpuset/background/cpus 0
     write /dev/cpuset/system-background/cpus 0-2
     write /dev/cpuset/top-app/cpus 0-5
-    write /dev/cpuset/camera-daemon/cpus 0-3
 
     # add a cpuset for the camera daemon
     # we want all the little cores for camera
     mkdir /dev/cpuset/camera-daemon
-    write /dev/cpuset/camera-daemon/cpus 0
+    write /dev/cpuset/camera-daemon/cpus 0-3
     write /dev/cpuset/camera-daemon/mems 0
     chown system system /dev/cpuset/camera-daemon
     chown system system /dev/cpuset/camera-daemon/tasks
@@ -69,7 +68,6 @@ on enable-low-power
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate 20000
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/io_is_busy 0
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time 40000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/sampling_down_factor 40000
     write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 883200
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/max_freq_hysteresis 60000
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay "19000 1382400:39000"
@@ -112,14 +110,6 @@ on enable-low-power
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/use_migration_notif 1
     write /proc/sys/kernel/sched_freq_inc_notify 50000
     write /proc/sys/kernel/sched_freq_dec_notify 50000
-
-    # Configure core_ctl
-    write /sys/devices/system/cpu/cpu4/core_ctl/min_cpus 1
-    write /sys/devices/system/cpu/cpu4/core_ctl/max_cpus 2
-    write /sys/devices/system/cpu/cpu4/core_ctl/busy_up_thres 68
-    write /sys/devices/system/cpu/cpu4/core_ctl/busy_down_thres 40
-    write /sys/devices/system/cpu/cpu4/core_ctl/offline_delay_ms 100
-    write /sys/devices/system/cpu/cpu4/core_ctl/is_big_cluster 1
 
     # Re-enable thermal
     write /sys/module/msm_thermal/core_control/enabled 1
