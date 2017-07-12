@@ -13,7 +13,7 @@ default='\033[0m'
 
 # Resources
 KERNEL_DIR=$PWD
-IMAGE=$KERNEL_DIR/arch/arm64/boot/Image.gz
+IMAGE=$KERNEL_DIR/arch/arm64/boot/Image.gz-dtb
 #IMAGE=$KERNEL_DIR/arch/arm/boot/zImage for 32 bit architecture
 DTBTOOL=$KERNEL_DIR/scripts/dtbToolCM
 TOOLCHAIN=/home/tanay297/android/toolchain/6.x-stock-64/bin
@@ -26,7 +26,7 @@ NEW_OUT=$OUT_DIR
 
 # Kernel Version Info
 BASE="Infected_Kernel-"
-CUR_VER="R6"
+CUR_VER="R7"
 INFECTED_VER="$BASE$CUR_VER"
  
 # Variables
@@ -48,8 +48,8 @@ function make_infected {
 		make -j4
 		rm -rf $NEWOUT/Image
 		cp -vr $IMAGE $NEW_OUT/zImage
-		make_dtb
-                make_modules
+#	        make_dtb
+#               make_modules
 		make_zip
 		housekeeping
 		echo -e "$green*******************************************************"

@@ -1450,7 +1450,9 @@ clock_set:
 			goto ret;
 		}
 		timeout--;
-		udelay(1);
+		spin_unlock_irq(&host->lock);
+		usleep_range(900, 1100);
+		spin_lock_irq(&host->lock);
 	}
 
 	clk |= SDHCI_CLOCK_CARD_EN;
@@ -1688,6 +1690,20 @@ static int sdhci_disable(struct mmc_host *mmc)
 		host->ops->platform_bus_voting(host, 0);
 
 	return 0;
+}
+
+static void sdhci_notify_halt(struct mmc_host *mmc, bool halt)
+{
+	struct sdhci_host *host = mmc_priv(mmc);
+
+	pr_debug("%s: halt notification was sent, halt=%d\n",
+		mmc_hostname(mmc), halt);
+	if (host->flags & SDHCI_USE_ADMA_64BIT) {
+		if (halt)
+			host->adma_desc_line_sz = 16;
+		else
+			host->adma_desc_line_sz = 12;
+	}
 }
 
 static inline void sdhci_update_power_policy(struct sdhci_host *host,
@@ -2902,6 +2918,7 @@ static const struct mmc_host_ops sdhci_ops = {
 	.stop_request = sdhci_stop_request,
 	.get_xfer_remain = sdhci_get_xfer_remain,
 	.notify_load	= sdhci_notify_load,
+	.notify_halt	= sdhci_notify_halt,
 	.notify_pm_status	= sdhci_notify_pm_status,
 };
 

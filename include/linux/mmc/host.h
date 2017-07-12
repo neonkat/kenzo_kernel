@@ -103,7 +103,7 @@ struct mmc_cmdq_host_ops {
 	int (*enable)(struct mmc_host *host);
 	void (*disable)(struct mmc_host *host, bool soft);
 	int (*request)(struct mmc_host *host, struct mmc_request *mrq);
-	void (*post_req)(struct mmc_host *host, int tag, int err);
+	void (*post_req)(struct mmc_host *host, int tag, int err, bool is_dcmd);
 	int (*halt)(struct mmc_host *host, bool halt);
 	void (*reset)(struct mmc_host *host, bool soft);
 	void (*dumpstate)(struct mmc_host *host);
@@ -172,6 +172,7 @@ struct mmc_host_ops {
 	unsigned long (*get_max_frequency)(struct mmc_host *host);
 	unsigned long (*get_min_frequency)(struct mmc_host *host);
 	int	(*notify_load)(struct mmc_host *, enum mmc_load);
+	void	(*notify_halt)(struct mmc_host *mmc, bool halt);
 	void	(*notify_pm_status)(struct mmc_host *, enum dev_state);
 	int	(*stop_request)(struct mmc_host *host);
 	unsigned int	(*get_xfer_remain)(struct mmc_host *host);

@@ -974,10 +974,10 @@ EXPORT_SYMBOL(mmc_cmdq_discard_queue);
  *	@tag: the request tag.
  *	@err: non-zero is error, success otherwise
  */
-void mmc_cmdq_post_req(struct mmc_host *host, int tag, int err)
+void mmc_cmdq_post_req(struct mmc_host *host, int tag, int err, bool is_dcmd)
 {
 	if (likely(host->cmdq_ops->post_req))
-		host->cmdq_ops->post_req(host, tag, err);
+		host->cmdq_ops->post_req(host, tag, err, is_dcmd);
 }
 EXPORT_SYMBOL(mmc_cmdq_post_req);
 
@@ -1006,6 +1006,8 @@ int mmc_cmdq_halt(struct mmc_host *host, bool halt)
 	mmc_host_clk_hold(host);
 	if (host->cmdq_ops->halt) {
 		err = host->cmdq_ops->halt(host, halt);
+		if (!err && host->ops->notify_halt)
+			host->ops->notify_halt(host, halt);
 		if (!err && halt)
 			mmc_host_set_halt(host);
 		else if (!err && !halt)
