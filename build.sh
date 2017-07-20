@@ -46,7 +46,7 @@ function make_infected {
 		echo
 		make $DEFCONFIG
 		make -j4
-		rm -rf $NEWOUT/Image
+		rm -rf $NEWOUT/zImage
 		cp -vr $IMAGE $NEW_OUT/zImage
 #	        make_dtb
 #               make_modules
