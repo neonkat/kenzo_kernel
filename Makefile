@@ -370,11 +370,12 @@ OPTIMIZFLAGS    = -fipa-sra -fipa-cp -fipa-cp-clone -fgcse-las -fgcse-lm -fgcse-
                   -fpredictive-commoning -fsplit-paths -ftree-slp-vectorize -fpeel-loops -fipa-cp-clone -mlow-precision-recip-sqrt -mpc-relative-literal-loads \
 		  -ftree-loop-im -ftree-loop-ivcanon -funsafe-loop-optimizations \
 		  -funswitch-loops -fweb -pipe -ffast-math -fsingle-precision-constant \
+                  -fmodulo-sched -fmodulo-sched-allow-regmoves \
                   -fforce-addr -fno-strict-aliasing $(GEN_OPT_FLAGS) 
 
 CFLAGS_MODULE   =
 AFLAGS_MODULE   =
-LDFLAGS_MODULE  =
+LDFLAGS_MODULE  = --strip-debug
 CFLAGS_KERNEL	= $(OPTIMIZFLAGS) -fpredictive-commoning $(GRAPHITE)
 AFLAGS_KERNEL	= $(OPTIMIZFLAGS) $(GRAPHITE)
 CFLAGS_GCOV	= -fprofile-arcs -ftest-coverage
@@ -465,6 +466,9 @@ PHONY += scripts_basic
 scripts_basic:
 	$(Q)$(MAKE) $(build)=scripts/basic
 	$(Q)rm -f .tmp_quiet_recordmcount
+
+#Tell gcc to never replace conditional load with a non-conditional one
+KBUILD_CFLAGS  += $(call cc-option,--param=allow-store-data-races=0)
 
 # To avoid any implicit rule to kick in, define an empty command.
 scripts/basic/%: scripts_basic ;
