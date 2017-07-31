@@ -45,7 +45,7 @@ on property:persist.spectrum.profile=0
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads "50 883200:30 998400:45 1113600:55 1382400:65 1612800:75 1747200:85 1804800:93 1958600:98"
     write /sys/devices/system/cpu/cpu4/cpufreq/interactive/max_freq_hysteresis 25000
     write /sys/module/cpu_boost/parameters/input_boost_enabled 1
-    write /sys/module/cpu_boost/parameters/input_boost_freq "0:1190400 1:1190400 2:0 3:0 4:0 5:0"
+    write /sys/module/cpu_boost/parameters/input_boost_freq "0:1017600 1:1017600 2:0 3:0 4:0 5:0"
     write /sys/module/cpu_boost/parameters/input_boost_ms 60
     write /sys/module/adreno_idler/parameters/adreno_idler_active Y
     write /sys/class/kgsl/kgsl-3d0/devfreq/max_freq 600000000
