@@ -34,6 +34,10 @@ on property:sys.boot_completed=1
 
     # i/o tweaks
     write /sys/block/mmcblk0/queue/scheduler maple
+    write /sys/block/mmcblk0/queue/iosched/sync_read_expire 350
+    write /sys/block/mmcblk0/queue/iosched/sync_write_expire 550
+    write /sys/block/mmcblk0/queue/iosched/async_read_expire 250
+    write /sys/block/mmcblk0/queue/iosched/async_write_expire 450
 
     # idle freq
     write /sys/devices/system/cpu/cpu0/sched_mostly_idle_freq 1017600
