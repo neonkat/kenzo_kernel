@@ -629,10 +629,8 @@ int f2fs_read_inline_dir(struct file *file, void *dirent, filldir_t filldir,
 
 	make_dentry_ptr_inline(inode, &d, inline_dentry);
 
-	if (pos >= d.max)
+	if (pos == d.max)
 		return 0;
-
-	bit_pos = (pos % NR_INLINE_DENTRY);
 
 	ipage = get_node_page(F2FS_I_SB(inode), inode->i_ino);
 	if (IS_ERR(ipage))
