@@ -27,9 +27,11 @@ is_slot_device=0;
 . /tmp/anykernel/tools/ak2-core.sh;
 
 
-## AnyKernel permissions
-# set permissions for included ramdisk files
-chmod -R 755 $ramdisk
+## AnyKernel file attributes
+# set permissions/ownership for included ramdisk files
+chmod -R 750 $ramdisk/*;
+chmod 644 $ramdisk/sbin/media_profiles.xml;
+chmod -R root:root $ramdisk/*;
 
 ## AnyKernel install
 dump_boot;
