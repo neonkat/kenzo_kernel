@@ -19,6 +19,7 @@
 #include <linux/cpu.h>
 #include <linux/kthread.h>
 #include <linux/sched.h>
+#include <linux/sched/rt.h>
 #include <linux/moduleparam.h>
 #include <linux/slab.h>
 #include <linux/input.h>
