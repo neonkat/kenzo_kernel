@@ -455,7 +455,7 @@ static int state_notifier_call(struct notifier_block *this,
 }
 
 static unsigned int Lnr_run_profile_sel = 0;
-static unsigned int Ltouch_boost_active = true;
+static unsigned int Ltouch_boost_active = false;
 static bool Lprevious_state = false;
 void lazyplug_enter_lazy(bool enter, bool video)
 {
