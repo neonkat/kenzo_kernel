@@ -418,8 +418,6 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
                    -Wno-maybe-uninitialized \
                    -Wno-array-bounds \
                    -Wno-tautological-compare \
-                   -Wno-duplicate-decl-specifier \
-		   -Wno-memset-elt-size -Wno-switch-unreachable \
                    $(OPTIMIZFLAGS) $(GRAPHITE)
 
 KBUILD_AFLAGS_KERNEL := $(OPTIMIZFLAGS) $(GRAPHITE)
