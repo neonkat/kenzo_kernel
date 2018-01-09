@@ -190,7 +190,7 @@ static inline bool wq_has_sleeper(wait_queue_head_t *wq)
 
 static inline struct inode *d_inode(const struct dentry *dentry)
 {
-	return dentry->d_inode;
+       return dentry->d_inode;
 }
 
 static inline struct dentry *file_dentry(const struct file *file)
@@ -2759,10 +2759,11 @@ int f2fs_map_blocks(struct inode *inode, struct f2fs_map_blocks *map,
 int f2fs_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
 			u64 start, u64 len);
 void f2fs_set_page_dirty_nobuffers(struct page *page);
-void f2fs_invalidate_page(struct page *page, unsigned long int offset);
 int __f2fs_write_data_pages(struct address_space *mapping,
 						struct writeback_control *wbc,
 						enum iostat_type io_type);
+void f2fs_invalidate_page(struct page *page, unsigned int offset,
+			unsigned int length);
 int f2fs_release_page(struct page *page, gfp_t wait);
 #ifdef CONFIG_MIGRATION
 int f2fs_migrate_page(struct address_space *mapping, struct page *newpage,
