@@ -364,21 +364,20 @@ GEN_OPT_FLAGS := $(call cc-option,$(ARM_ARCH_OPT),-march=armv8-a+crypto) \
  -fmodulo-sched-allow-regmoves \
  -fivopts
 
-OPTIMIZFLAGS    = -fipa-sra -fipa-cp -fipa-cp-clone -fgcse-las -fgcse-lm -fgcse-sm -fipa-pta -fivopts -fomit-frame-pointer \
-		  -frename-registers -fsection-anchors -ftracer \
-                  -ftree-loop-vectorize -ftree-loop-distribute-patterns -fvect-cost-model -ftree-partial-pre -fgcse-after-reload -fsched-spec-load \
-                  -fpredictive-commoning -fsplit-paths -ftree-slp-vectorize -fpeel-loops -fipa-cp-clone -mlow-precision-recip-sqrt -mpc-relative-literal-loads \
-		  -ftree-loop-im -ftree-loop-ivcanon -funsafe-loop-optimizations \
-		  -funswitch-loops -fweb -pipe -ffast-math -fsingle-precision-constant \
-                  -fmodulo-sched -fmodulo-sched-allow-regmoves \
-                  -fforce-addr -fno-strict-aliasing $(GEN_OPT_FLAGS) 
+OPTIMIZFLAGS    = -O3 -fno-inline-functions \
+                  -fipa-pta \
+		  -fsection-anchors -ftracer \
+                  -fpeel-loops \
+		  -ftree-loop-im -ffast-math -ftree-loop-ivcanon \
+		  -funswitch-loops -pipe -fsingle-precision-constant \
+                  -fno-strict-aliasing $(GEN_OPT_FLAGS) 
 
 CFLAGS_MODULE   =
 AFLAGS_MODULE   =
 LDFLAGS_MODULE  = --strip-debug
 CFLAGS_KERNEL	= $(OPTIMIZFLAGS) -fpredictive-commoning $(GRAPHITE)
 AFLAGS_KERNEL	= $(OPTIMIZFLAGS) $(GRAPHITE)
-CFLAGS_GCOV	= -fprofile-arcs -ftest-coverage
+CFLAGS_GCOV	= -ftest-coverage
 
 
 # Use USERINCLUDE when you must reference the UAPI directories only.
