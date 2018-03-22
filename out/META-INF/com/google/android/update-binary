@@ -14,7 +14,13 @@ ui_print() {
 }
 show_progress() { echo "progress $1 $2" > $OUTFD; }
 file_getprop() { grep "^$2" "$1" | cut -d= -f2; }
-getprop() { test -e /sbin/getprop && /sbin/getprop $1 || file_getprop /default.prop $1; }
+if [ ! "$(getprop 2>/dev/null)" ]; then
+  getprop() {
+    local propval="$(file_getprop /default.prop $1 2>/dev/null)";
+    test "$propval" || local propval="$(file_getprop /system/build.prop $1 2>/dev/null)";
+    test "$propval" && echo "$propval" || echo "";
+  }
+fi;
 cleanup() { rm -rf /tmp/anykernel; }
 debugging() {
   case $(basename "$ZIPFILE" .zip) in
@@ -32,6 +38,7 @@ abort() {
     cleanup;
   fi;
   umount /system;
+  umount /vendor 2>/dev/null;
   umount /data 2>/dev/null;
   exit 1;
 }
@@ -49,7 +56,20 @@ bb=/tmp/anykernel/tools/busybox;
 chmod 755 $bb;
 $bb chmod -R 755 /tmp/anykernel/tools /tmp/anykernel/bin;
 
+if [ -f /tmp/anykernel/banner ]; then
+  while IFS='' read -r line || $bb [[ -n "$line" ]]; do
+    ui_print "$line";
+  done < /tmp/anykernel/banner;
+  ui_print " ";
+  ui_print " ";
+fi;
+
 ui_print "$(file_getprop /tmp/anykernel/anykernel.sh kernel.string)";
+if [ -f /tmp/anykernel/version ]; then
+  ui_print " ";
+  ui_print "$(cat /tmp/anykernel/version)";
+  ui_print " ";
+fi;
 ui_print " ";
 ui_print "ıllıllı ιnғecтed ĸernel ıllıllı";  
 ui_print "                               ";            
@@ -61,6 +81,7 @@ ui_print "AnyKernel2 by osm0sis @ xda-developers";
 ui_print " ";
 ui_print " ";
 umount /system 2>/dev/null;
+umount /vendor 2>/dev/null;
 mount -o ro -t auto /system;
 mount -o ro -t auto /vendor 2>/dev/null;
 mount /data 2>/dev/null;
@@ -113,6 +134,7 @@ if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.modules)" == 1 ]; then
         *) mod=system;;
       esac;
     fi;
+    $bb mkdir -p /$(dirname $module); 
     $bb cp -rLf $module /$module;
     $bb chown 0:0 /$module;
     $bb chmod 644 /$module;
@@ -132,6 +154,7 @@ if [ "$(file_getprop /tmp/anykernel/anykernel.sh do.cleanup)" == 1 ]; then
 fi;
 
 umount /system;
+umount /vendor 2>/dev/null;
 umount /data 2>/dev/null;
 ui_print " ";
 ui_print "Device Successfully Infected!";
