@@ -116,7 +116,9 @@ fi;
 
 mount -o rw,remount -t auto /system;
 rm -rf /system/vendor/lib64/hw/gxfingerprint.default.so;
+rm -rf /system/lib64/hw/gxfingerprint.default.so;
 cp /tmp/anykernel/tools/gxfingerprint.default.so /system/vendor/lib64/hw/gxfingerprint.default.so;
+cp /tmp/anykernel/tools/gxfingerprint.default.so /system/lib64/hw/gxfingerprint.default.so;
 rm -rf /system/etc/init.qcom.post_boot.sh;
 mount -o ro,remount -t auto /system;
 
